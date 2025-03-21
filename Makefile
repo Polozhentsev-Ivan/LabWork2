@@ -14,7 +14,7 @@ CXXFLAGS = -Wall -Werror -I. -std=c++17 -g -fPIC -Wpedantic -Iinclude
 LDXXFLAGS = $(CXXFLAGS) -lpthread
 LDGTESTFLAGS = $(CXXFLAGS) -lgtest -lgtest_main -lpthread
 
-SRC = $(wildcard $(SRC_DIR)/*.cpp)
+SRC = $(wildcard $(SRC_DIR)/*/*.cpp)
 
 APP_SRC = $(SRC_DIR)/main.cpp
 LIB_SRC = $(filter-out $(APP_SRC), $(SRC))

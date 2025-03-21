@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
-#include "../include/card.h"
-#include "../include/task.h"
-#include "../include/quests_card.h"
+#include "../include/card/card.h"
+#include "../include/card/task.h"
+#include "../include/card/quests_card.h"
 #include "../include/enums.h"
-#include "../include/character_card.h"
-#include "../include/player_card.h"
-#include "../include/monster_card.h"
-#include "../include/npc_card.h"
-#include "../include/item_card.h"
-#include "../include/equipment_card.h"
-#include "../include/environment_card.h"
+#include "../include/card/character_card.h"
+#include "../include/card/player_card.h"
+#include "../include/card/monster_card.h"
+#include "../include/card/npc_card.h"
+#include "../include/card/item_card.h"
+#include "../include/card/equipment_card.h"
+#include "../include/card/environment_card.h"
 
 TEST(CardTest, ConstructorGettersSetters) {
     Card card("Test Card", "Test Description");
