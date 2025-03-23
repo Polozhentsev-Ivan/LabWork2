@@ -56,8 +56,10 @@ void TerminalManager::moveCursor(int row, int col) {
 
 bool TerminalManager::getTerminalSize(int& width, int& height) {
     if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize) == -1) {
-        std::cerr << "Ошибка: не удалось получить размеры терминала\n";
-        return false;
+        std::cerr << "Предупреждение: не удалось получить размеры терминала, используются значения по умолчанию\n";
+        width = 80;
+        height = 24;
+        return true;
     }
     
     width = terminalSize.ws_col;
