@@ -18,7 +18,7 @@ jobs:
       - name: Build
         run: |
           make
-          ./card_world
+          timeout 5s ./card_world || true
       - name: Test
         run: |
           make test

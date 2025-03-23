@@ -79,8 +79,10 @@ bool GameMap::loadFromFile(const std::string& filename, int& playerX, int& playe
     file.close();
     
     treeManager.setMapData(&mapData);
+    monsterBoxManager.setMapData(&mapData);
     
     initTreeCache();
+    monsterBoxManager.scanForBoxes();
     
     return true;
 }
@@ -99,11 +101,11 @@ bool GameMap::canMoveTo(int row, int col) const {
     
     char target = mapData[row][col];
     
-    if (target == ' ') {
+    if (target == ' ' && !isBoxLocation(row, col)) {
         return true;
     }
     
-    return (target != '#' && target != '|');
+    return (target != '#' && target != '|' && target != 'M' && !isBoxLocation(row, col));
 }
 
 int GameMap::getHeight() const {
@@ -129,3 +131,109 @@ bool GameMap::isTreeSpace(int row, int col) const {
 void GameMap::initTreeCache() {
     treeManager.initCache();
 } 
+
+bool GameMap::isBoxLocation(int row, int col) const {
+    return monsterBoxManager.isBoxLocation(row, col);
+}
+
+bool GameMap::isBoxReadyAt(int row, int col) const {
+    return monsterBoxManager.isBoxReadyAt(row, col);
+}
+
+void GameMap::useBox(int row, int col) {
+    monsterBoxManager.useBox(row, col);
+}
+
+void GameMap::updateBoxes() {
+    monsterBoxManager.updateBoxes();
+}
+
+std::pair<int, int> GameMap::getBoxCenter(int row, int col) const {
+    return monsterBoxManager.getBoxCenter(row, col);
+}
+
+bool GameMap::isInsideBox(int row, int col) const {
+    return monsterBoxManager.isInsideBox(row, col);
+}
+
+int GameMap::getRemainingCooldown(int row, int col) const {
+    return monsterBoxManager.getRemainingCooldown(row, col);
+}
+
+void GameMap::spawnMonster(int row, int col) {
+    if (isValidPosition(row, col) && getCell(row, col) == ' ') {
+        mapData[row][col] = 'M';
+    }
+}
+
+void GameMap::placeIndicator(int row, int col, bool isReady) {
+    auto center = getBoxCenter(row, col);
+    
+    if (center.first == -1 || center.second == -1) {
+        return;
+    }
+    
+    if (isReady) {
+        fillBoxWithSymbols(row, col, 'z');
+    } else {
+        int remaining = getRemainingCooldown(row, col);
+        
+        displayTimer(row, col, remaining);
+    }
+}
+
+void GameMap::fillBoxWithSymbols(int row, int col, char symbol) {
+    BoxInfo box;
+    if (!getBoxInfo(row, col, box)) return;
+    
+    for (int r = box.topRow + 1; r < box.topRow + box.height - 1; r++) {
+        for (int c = box.leftCol + 1; c < box.leftCol + box.width - 1; c++) {
+            if (isValidPosition(r, c)) {
+                mapData[r][c] = symbol;
+            }
+        }
+    }
+}
+
+void GameMap::displayTimer(int row, int col, int seconds) {
+    BoxInfo box;
+    if (!getBoxInfo(row, col, box)) return;
+    
+    if (box.width < 5 || box.height < 3) {
+        fillBoxWithSymbols(row, col, seconds > 0 ? (seconds <= 9 ? '0' + seconds : ' ') : ' ');
+        return;
+    }
+    
+    fillBoxWithSymbols(row, col, ' ');
+    
+    if (seconds <= 0) {
+        return;
+    }
+    
+    int minutes = seconds / 60;
+    int remainingSeconds = seconds % 60;
+    
+    for (int r = box.topRow + 1; r < box.topRow + box.height - 1; r++) {
+        int startCol = box.leftCol + (box.width - 4) / 2; // 4 символа для таймера (X:00)
+        
+        // Отображаем таймер в формате "1:00", где 1 - минуты, 00 - секунды
+        if (isValidPosition(r, startCol)) {
+            mapData[r][startCol] = '0' + minutes;
+            if (isValidPosition(r, startCol + 1)) mapData[r][startCol + 1] = ':';
+            if (isValidPosition(r, startCol + 2)) mapData[r][startCol + 2] = '0' + (remainingSeconds / 10);
+            if (isValidPosition(r, startCol + 3)) mapData[r][startCol + 3] = '0' + (remainingSeconds % 10);
+        }
+    }
+}
+
+bool GameMap::getBoxInfo(int row, int col, BoxInfo& info) const {
+    auto* box = monsterBoxManager.getBoxAt(row, col);
+    if (!box) return false;
+    
+    info.topRow = box->topRow;
+    info.leftCol = box->leftCol;
+    info.width = box->width;
+    info.height = box->height;
+    
+    return true;
+}

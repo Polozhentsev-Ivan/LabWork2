@@ -21,6 +21,10 @@ class Game {
         bool devMode;
         bool gameRunning;
 
+        void updateBoxIndicators();
+        void activateMonsterBox();
+        void initAllBoxIndicators();
+
     public:
         Game();
         ~Game();

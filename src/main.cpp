@@ -4,7 +4,7 @@
 #include <ctime>
 
 int main(int argc, char* argv[]) {
-    std::string mapFile = "map.txt";
+    std::string mapFile = "map_test.txt";
     bool devMode = false;
     
     // Обработка аргументов командной строки

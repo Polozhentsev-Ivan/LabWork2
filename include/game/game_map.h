@@ -4,13 +4,20 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include "enviroment_manager.h"
+#include "../game/enviroment_manager.h"
 
+struct BoxInfo {
+    int topRow;
+    int leftCol;
+    int width;
+    int height;
+};
 
 class GameMap {
     private:
         std::vector<std::string> mapData;
         TreeManager treeManager;
+        MonsterBox monsterBoxManager;
 
     public:
         GameMap();
@@ -23,7 +30,22 @@ class GameMap {
         int getWidth() const;
         bool isValidPosition(int row, int col) const;
         bool isTreeSpace(int row, int col) const;
+
+        bool isBoxLocation(int row, int col) const;
+        bool isBoxReadyAt(int row, int col) const;
+        void useBox(int row, int col);
+        void updateBoxes();
+        std::pair<int, int> getBoxCenter(int row, int col) const;
+        bool isInsideBox(int row, int col) const;
+        int getRemainingCooldown(int row, int col) const;
+        void spawnMonster(int row, int col);
+        void placeIndicator(int row, int col, bool isReady);
+        void fillBoxWithSymbols(int row, int col, char symbol);
+        void displayTimer(int row, int col, int seconds);
+        bool getBoxInfo(int row, int col, BoxInfo& info) const;
+        
         void initTreeCache();
 };
+
 #endif // GAME_MAP_H
 
