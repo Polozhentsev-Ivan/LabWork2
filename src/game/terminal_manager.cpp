@@ -1,16 +1,13 @@
 #include "../../include/game/terminal_manager.h"
 
-// Инициализация статической переменной
 struct termios TerminalManager::oldTerminalSettings;
 
 TerminalManager::TerminalManager() : rawModeEnabled(false) {
-    // Инициализация структуры размеров терминала
     terminalSize.ws_col = 0;
     terminalSize.ws_row = 0;
 }
 
 TerminalManager::~TerminalManager() {
-    // Если "сырой" режим всё еще включен, выключаем его
     if (rawModeEnabled) {
         setRawMode(false);
     }
@@ -20,34 +17,28 @@ void TerminalManager::setRawMode(bool enable) {
     static struct termios newSettings;
     
     if (enable && !rawModeEnabled) {
-        // Сохраняем текущие настройки терминала
         tcgetattr(STDIN_FILENO, &oldTerminalSettings);
         
-        // Копируем настройки в новую структуру
         newSettings = oldTerminalSettings;
         
-        // Отключаем канонический режим и эхо
         newSettings.c_lflag &= ~(ICANON | ECHO);
         
-        // Устанавливаем неблокирующий режим ввода
-        newSettings.c_cc[VMIN] = 0;   // Неблокирующий ввод
-        newSettings.c_cc[VTIME] = 0;  // Без таймаута
+        newSettings.c_cc[VMIN] = 0;
+        newSettings.c_cc[VTIME] = 0;
         
-        // Применяем новые настройки
         tcsetattr(STDIN_FILENO, TCSANOW, &newSettings);
         
         rawModeEnabled = true;
     } 
     else if (!enable && rawModeEnabled) {
-        // Восстанавливаем старые настройки
         tcsetattr(STDIN_FILENO, TCSANOW, &oldTerminalSettings);
         rawModeEnabled = false;
     }
 }
 
 void TerminalManager::clearScreen() {
-    std::cout << "\033[2J"; // Очистка экрана
-    std::cout << "\033[H";  // Перемещение курсора в верхний левый угол
+    std::cout << "\033[2J";
+    std::cout << "\033[H";
 }
 
 void TerminalManager::moveCursor(int row, int col) {
@@ -70,12 +61,10 @@ bool TerminalManager::getTerminalSize(int& width, int& height) {
 void TerminalManager::cleanup(int extraLines) {
     clearScreen();
     
-    // Перемещаем курсор вниз на указанное количество строк
     if (extraLines > 0) {
         std::cout << "\033[" << extraLines << ";1H";
     }
     
-    // Отключаем "сырой" режим, если он включен
     if (rawModeEnabled) {
         setRawMode(false);
     }

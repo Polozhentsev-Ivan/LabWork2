@@ -19,29 +19,24 @@ void Viewport::getViewArea(int& outX, int& outY, int& outWidth, int& outHeight) 
 }
 
 void Viewport::update(int playerX, int playerY, const GameMap& map) {
-    // Кэшируем размеры карты для избежания повторных вычислений
     const int mapWidth = map.getWidth();
     const int mapHeight = map.getHeight();
     
-    // Вычисляем новые координаты видимой области
     int newX = x;
     int newY = y;
     
-    // Проверяем необходимость прокрутки по горизонтали
     if (playerX - x < scrollMargin) {
         newX = std::max(0, playerX - scrollMargin);
     } else if (playerX - x >= width - scrollMargin) {
         newX = std::min(mapWidth - width, playerX - width + scrollMargin);
     }
     
-    // Проверяем необходимость прокрутки по вертикали
     if (playerY - y < scrollMargin) {
         newY = std::max(0, playerY - scrollMargin);
     } else if (playerY - y >= height - scrollMargin) {
         newY = std::min(mapHeight - height, playerY - height + scrollMargin);
     }
     
-    // Обновляем координаты видимой области
     x = newX;
     y = newY;
 }

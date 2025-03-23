@@ -5,25 +5,16 @@
 
 int main(int argc, char* argv[]) {
     std::string mapFile = "map_test.txt";
-    bool devMode = false;
     
-    // Обработка аргументов командной строки
-    for (int i = 1; i < argc; i++) {
-        std::string arg = argv[i];
-        if (arg == "--dev" || arg == "-d") {
-            devMode = true;
-        } else {
-            mapFile = arg;
-        }
+    if (argc > 1) {
+        mapFile = argv[1];
     }
     
-    // Инициализация генератора случайных чисел (нужнр будет для генерации собираемых предметов, расчетов урона и т.д.)
     srand(time(nullptr));
     
     Game game;
-    game.setDevMode(devMode);
     
-    if (!game.init(mapFile, devMode)) {
+    if (!game.init(mapFile)) {
         return 1;
     }
     

@@ -4,7 +4,12 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <map>
+#include <unordered_map>
+#include <utility>
+#include <chrono>
 #include "../game/enviroment_manager.h"
+#include "../card/monster_card.h"
 
 struct BoxInfo {
     int topRow;
@@ -18,6 +23,12 @@ class GameMap {
         std::vector<std::string> mapData;
         TreeManager treeManager;
         MonsterBox monsterBoxManager;
+        std::map<std::pair<int, int>, MonsterCard> monsters;
+        std::unordered_map<size_t, std::chrono::steady_clock::time_point> monsterLastAttackTime;
+
+        size_t getPositionHash(int row, int col) const {
+            return static_cast<size_t>(row) * 10000 + static_cast<size_t>(col);
+        }
 
     public:
         GameMap();
@@ -45,7 +56,17 @@ class GameMap {
         bool getBoxInfo(int row, int col, BoxInfo& info) const;
         
         void initTreeCache();
+
+        bool isMonsterAt(int row, int col) const;
+        MonsterCard& getMonsterAt(int row, int col);
+        const MonsterCard& getMonsterAt(int row, int col) const;
+        bool attackMonster(int row, int col, int damage);
+        bool findMonsterInRange(int startRow, int startCol, int range, int& outRow, int& outCol) const;
+        
+        void updateMonsters(int playerRow, int playerCol, int& damageToPlayer);
+        bool canMonsterAttack(int monsterRow, int monsterCol) const;
+        bool isPlayerInRange(int monsterRow, int monsterCol, int playerRow, int playerCol, int range = 1) const;
 };
 
-#endif // GAME_MAP_H
+#endif
 

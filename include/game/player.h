@@ -3,12 +3,15 @@
 
 #include <ctime>
 #include "game_map.h"
+#include "../card/player_card.h"
 
 class Player {
     private:
         int x,y;
-        int moveDelay; //микросекунды
+        int moveDelay;
         long long lastMoveTime;
+        int attackRange; 
+        PlayerCard card; 
 
         long long getCurrentTimeMicros() const;
 
@@ -21,8 +24,15 @@ class Player {
         void setPosition(int newX, int newY);
         int getMoveDelay() const;
         void changeSpeed(int delta);
-         
-
+        
+        bool attack(GameMap& map);
+        void setAttackRange(int range);
+        int getAttackRange() const;
+        void takeDamage(int damage);
+        
+        PlayerCard& getCard();
+        const PlayerCard& getCard() const;
+        void setCard(const PlayerCard& newCard);
 };
 
 #endif // PLAYER_H

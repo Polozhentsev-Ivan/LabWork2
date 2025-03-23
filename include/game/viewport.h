@@ -5,9 +5,9 @@
 
 class Viewport {
 private:
-    int x, y; // Верхний левый угол видимой области
-    int width, height; // Размеры видимой области
-    int scrollMargin; // Расстояние до края для начала прокрутки
+    int x, y;
+    int width, height;
+    int scrollMargin;
     
 public:
     Viewport(int viewportWidth = 0, int viewportHeight = 0, int margin = 3);

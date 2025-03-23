@@ -1,17 +1,16 @@
 #include "../../include/game/renderer.h"
 #include <iostream>
 
-Renderer::Renderer(TerminalManager& termManager, bool devModeEnabled)
-    : terminal(termManager), termWidth(0), termHeight(0), devMode(devModeEnabled) {}
+Renderer::Renderer(TerminalManager& termManager)
+    : terminal(termManager), termWidth(0), termHeight(0),
+      targetedMonsterRow(-1), targetedMonsterCol(-1), monsterTargeted(false) {}
 
 Renderer::~Renderer() {}
 
 void Renderer::preallocateBuffers() {
-    // Предварительно выделяем память для буферов
     tempLine.reserve(termWidth + 10);
     tempSegment.reserve(termWidth + 10);
     
-    // Предварительно выделяем память для буфера экрана
     buffer.resize(termHeight);
     for (auto& line : buffer) {
         line.reserve(termWidth + 10);
@@ -23,17 +22,11 @@ void Renderer::setSize(int width, int height) {
     termWidth = width;
     termHeight = height;
     
-    // Уменьшаем высоту терминала для отладочной информации
-    if (devMode) {
-        termHeight -= 4; // Увеличиваем отступ для дополнительной информации
-    }
-    
-    // Перевыделяем буферы
     preallocateBuffers();
 }
 
 int Renderer::getHeight() const {
-    return termHeight + (devMode ? 4 : 0);
+    return termHeight;
 }
 
 int Renderer::getWidth() const {
@@ -63,13 +56,12 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
                 
                 if (worldRow == playerY && worldCol == playerX) {
                     char cell = map.getCell(worldRow, worldCol);
-                    // Проверяем, нужно ли скрыть персонажа
                     if (cell == '\\' || cell == '/' || cell == '^') {
-                        displayChar = cell; // Скрываем персонажа за листвой
+                        displayChar = cell;
                     } else if (cell == ' ' && map.isTreeSpace(worldRow, worldCol)) {
-                        displayChar = cell; // Скрываем персонажа за пробелом между / и обратным слешем
+                        displayChar = cell;
                     } else {
-                        displayChar = '@'; // Отображаем персонажа
+                        displayChar = '@';
                     }
                 } else {
                     displayChar = map.getCell(worldRow, worldCol);
@@ -78,7 +70,6 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
             
             tempLine.push_back(displayChar);
             
-            // Проверяем, изменился ли символ
             if (j < static_cast<int>(buffer[i].size()) && buffer[i][j] != displayChar) {
                 if (changeStart == -1) {
                     changeStart = j;
@@ -86,7 +77,6 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
                 tempSegment.push_back(displayChar);
                 lineChanged = true;
             } else if (changeStart != -1) {
-                // Обновляем измененный сегмент
                 terminal.moveCursor(i + 1, changeStart + 1);
                 std::cout << tempSegment;
                 changeStart = -1;
@@ -94,12 +84,10 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
             }
         }
         
-        // Проверяем, остался ли необработанный измененный сегмент
         if (changeStart != -1) {
             terminal.moveCursor(i + 1, changeStart + 1);
             std::cout << tempSegment;
         } else if (lineChanged || buffer[i].size() != tempLine.size()) {
-            // Если строка изменилась, но не было обработано по сегментам, обновляем всю строку
             terminal.moveCursor(i + 1, 1);
             std::cout << tempLine;
         }
@@ -107,42 +95,77 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
         buffer[i] = tempLine;
     }
     
-    // Отображаем отладочную информацию, если включен режим разработчика
-    if (devMode) {
-        showDebugInfo(player, viewport, map);
-    }
-    
     std::cout.flush();
 }
 
-void Renderer::showDebugInfo(const Player& player, const Viewport& viewport, const GameMap& map) {
-    int playerX, playerY;
-    player.getPosition(playerX, playerY);
+void Renderer::showPlayerStats(const Player& player) {
+    const PlayerCard& card = player.getCard();
     
-    int viewX, viewY, viewWidth, viewHeight;
-    viewport.getViewArea(viewX, viewY, viewWidth, viewHeight);
+    int statsRow = termHeight + 1;
     
-    // Вывод информации о позиции персонажа и параметрах видимой области
-    terminal.moveCursor(termHeight + 1, 1);
-    std::string debugInfo = "Персонаж: (" + std::to_string(playerX) + ", " + std::to_string(playerY) + 
-                           ") Задержка: " + std::to_string(player.getMoveDelay() / 1000) + "мс" +
-                           " | Вид: (" + std::to_string(viewX) + ", " + std::to_string(viewY) + ")";
-    std::cout << debugInfo << "                          ";
+    int health = card.getHealth();
+    int maxHealth = card.getMaxHealth();
+    int attack = card.getAttack();
+    int defense = card.getDefense();
+    int speed = card.getSpeed();
+    int level = card.getLevel();
+    int experience = card.getExperience();
+    int expToNextLevel = card.getExperienceToNextLevel();
     
-    // Информация о клетке под персонажем
-    if (map.isValidPosition(playerY, playerX)) {
-        char cellChar = map.getCell(playerY, playerX);
-        terminal.moveCursor(termHeight + 2, 1);
-        std::string cellInfo = "Клетка: '" + std::string(1, cellChar) + 
-                              "' | isTreeSpace: " + (map.isTreeSpace(playerY, playerX) ? "да" : "нет");
-        std::cout << cellInfo << "                          ";
-    }
+    std::string statsInfo = "Player HP: " + std::to_string(health) + "/" + std::to_string(maxHealth) +
+                           " | ATK: " + std::to_string(attack) +
+                           " | DEF: " + std::to_string(defense) +
+                           " | SPD: " + std::to_string(speed) +
+                           " | LVL: " + std::to_string(level) +
+                           " | EXP: " + std::to_string(experience) + "/" + std::to_string(expToNextLevel);
     
-    // Информация о скорости
-    terminal.moveCursor(termHeight + 3, 1);
-    std::cout << "Скорость: " << (200000 - player.getMoveDelay()) / 10000 << "/20" << "                          ";
+    terminal.moveCursor(statsRow, 1);
+    std::cout << std::string(termWidth, ' ');
+    
+    terminal.moveCursor(statsRow, 1);
+    std::cout << statsInfo;
 }
 
-void Renderer::setDevMode(bool enabled) {
-    devMode = enabled;
+void Renderer::showTargetedMonsterInfo(const GameMap& map) {
+    if (!monsterTargeted || !map.isMonsterAt(targetedMonsterRow, targetedMonsterCol)) {
+        clearTargetedMonster();
+        return;
+    }
+    
+    const MonsterCard& monster = map.getMonsterAt(targetedMonsterRow, targetedMonsterCol);
+    
+    int monsterInfoRow = termHeight + 2;
+    
+    std::string name = monster.getName();
+    int health = monster.getHealth();
+    int maxHealth = monster.getMaxHealth();
+    int attack = monster.getAttack();
+    int defense = monster.getDefense();
+    int level = monster.getLevel();
+    
+    std::string monsterInfo = "Monster: " + name +
+                             " | HP: " + std::to_string(health) + "/" + std::to_string(maxHealth) +
+                             " | ATK: " + std::to_string(attack) +
+                             " | DEF: " + std::to_string(defense) +
+                             " | LVL: " + std::to_string(level);
+    
+    terminal.moveCursor(monsterInfoRow, 1);
+    std::cout << std::string(termWidth, ' ');
+    
+    terminal.moveCursor(monsterInfoRow, 1);
+    std::cout << monsterInfo;
+}
+
+void Renderer::clearTargetedMonster() {
+    monsterTargeted = false;
+    
+    int monsterInfoRow = termHeight + 2;
+    terminal.moveCursor(monsterInfoRow, 1);
+    std::cout << std::string(termWidth, ' ');
+}
+
+void Renderer::setTargetedMonster(int row, int col) {
+    targetedMonsterRow = row;
+    targetedMonsterCol = col;
+    monsterTargeted = true;
 } 

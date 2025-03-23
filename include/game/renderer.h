@@ -15,19 +15,25 @@ private:
     std::string tempLine;
     std::string tempSegment;
     int termWidth, termHeight;
-    bool devMode;
     
     void preallocateBuffers();
     
+    int targetedMonsterRow;
+    int targetedMonsterCol;
+    bool monsterTargeted;
+    
 public:
-    Renderer(TerminalManager& termManager, bool devModeEnabled = false);
+    Renderer(TerminalManager& termManager);
     ~Renderer();
     void setSize(int width, int height);
     int getHeight() const;
     int getWidth() const;
     void drawField(const GameMap& map, const Player& player, const Viewport& viewport);
-    void showDebugInfo(const Player& player, const Viewport& viewport, const GameMap& map);
-    void setDevMode(bool enabled);
+    
+    void showPlayerStats(const Player& player);
+    void showTargetedMonsterInfo(const GameMap& map);
+    void setTargetedMonster(int row, int col);
+    void clearTargetedMonster();
 };
 
 #endif // RENDERER_H 

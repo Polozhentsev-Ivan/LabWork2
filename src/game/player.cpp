@@ -1,18 +1,34 @@
 #include "../../include/game/player.h"
 #include <algorithm>
 #include <ctime>
+#include <sys/time.h>
 
 Player::Player(int startX, int startY) 
-    : x(startX), y(startY), moveDelay(50000), lastMoveTime(0) {
+    : x(startX), y(startY), moveDelay(50000), lastMoveTime(0), attackRange(3) {
     lastMoveTime = getCurrentTimeMicros();
+    
+    card = PlayerCard(
+        "Hero", 
+        "The main character", 
+        100,
+        100,
+        15,
+        10,
+        5,
+        Race::human,
+        1,
+        0,
+        100,
+        0
+    );
 }
 
 Player::~Player() {}
 
 long long Player::getCurrentTimeMicros() const {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (ts.tv_sec * 1000000LL + ts.tv_nsec / 1000);
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (tv.tv_sec * 1000000LL + tv.tv_usec);
 }
 
 bool Player::move(int dx, int dy, const GameMap& map) {
@@ -71,4 +87,50 @@ void Player::changeSpeed(int delta) {
     } else if (delta < 0) {
         moveDelay = std::min(200000, moveDelay + 10000);
     }
+}
+
+bool Player::attack(GameMap& map) {
+    int targetRow, targetCol;
+    
+    if (map.findMonsterInRange(y, x, attackRange, targetRow, targetCol)) {
+        int damage = card.getAttack();
+        map.attackMonster(targetRow, targetCol, damage);
+        
+        return true;
+    }
+    
+    return false;
+}
+
+void Player::setAttackRange(int range) {
+    attackRange = std::max(1, range);
+}
+
+int Player::getAttackRange() const {
+    return attackRange;
+}
+
+PlayerCard& Player::getCard() {
+    return card;
+}
+
+const PlayerCard& Player::getCard() const {
+    return card;
+}
+
+void Player::setCard(const PlayerCard& newCard) {
+    card = newCard;
+}
+
+void Player::takeDamage(int damage) {
+    if (damage <= 0) {
+        return;
+    }
+    
+    int defense = card.getDefense();
+    int actualDamage = std::max(1, damage - defense / 2);
+    
+    int currentHealth = card.getHealth();
+    int newHealth = std::max(0, currentHealth - actualDamage);
+    card.setHealth(newHealth);
 } 
