@@ -1,0 +1,45 @@
+<map id="include/card/character_card.h" name="include/card/character_card.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="690,5,857,45"/>
+<area shape="rect" id="Node000002" href="$da/de5/monster__card_8h.html" title=" " alt="" coords="361,93,519,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="688,51,514,96,512,91,687,46"/>
+<area shape="rect" id="Node000015" href="$d0/d6b/npc__card_8h.html" title=" " alt="" coords="779,101,954,126"/>
+<area shape="poly" id="edge19_Node000001_Node000015" title=" " alt="" coords="806,53,856,98,852,102,802,57"/>
+<area shape="rect" id="Node000017" href="$df/d35/player__card_8h.html" title=" " alt="" coords="608,93,755,133"/>
+<area shape="poly" id="edge21_Node000001_Node000017" title=" " alt="" coords="745,57,704,95,700,91,741,53"/>
+<area shape="rect" id="Node000019" href="$d5/d47/character__card_8cpp.html" title="Implements the CharacterCard class methods." alt="" coords="979,93,1117,133"/>
+<area shape="poly" id="edge24_Node000001_Node000019" title=" " alt="" coords="848,47,989,91,987,96,846,52"/>
+<area shape="rect" id="Node000003" href="$de/d1d/game__map_8h.html" title=" " alt="" coords="121,181,319,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,140,254,184,252,179,374,135"/>
+<area shape="rect" id="Node000014" href="$df/da7/monster__card_8cpp.html" title="Implements the MonsterCard class methods." alt="" coords="343,181,537,207"/>
+<area shape="poly" id="edge18_Node000002_Node000014" title=" " alt="" coords="443,147,443,181,437,181,437,147"/>
+<area shape="rect" id="Node000004" href="$d2/dd5/game_8h.html" title=" " alt="" coords="244,401,407,427"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="108,205,64,214,29,229,17,239,10,250,8,263,13,279,32,308,56,332,84,352,115,369,181,392,244,404,243,409,180,397,113,374,81,357,52,336,28,311,8,281,3,264,5,248,13,235,26,225,62,209,107,200"/>
+<area shape="rect" id="Node000007" href="$d3/d62/player_8h.html" title=" " alt="" coords="498,255,665,280"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="292,207,524,252,522,257,291,212"/>
+<area shape="rect" id="Node000008" href="$d6/d85/renderer_8h.html" title=" " alt="" coords="363,328,543,353"/>
+<area shape="poly" id="edge12_Node000003_Node000008" title=" " alt="" coords="299,207,376,227,408,239,430,253,443,271,451,291,456,327,451,328,445,292,438,273,426,257,406,244,374,232,297,212"/>
+<area shape="rect" id="Node000011" href="$da/dc4/viewport_8h.html" title=" " alt="" coords="234,255,417,280"/>
+<area shape="poly" id="edge13_Node000003_Node000011" title=" " alt="" coords="250,212,310,252,307,257,247,217"/>
+<area shape="rect" id="Node000013" href="$da/d25/game__map_8cpp.html" title="Implements the GameMap class methods for managing the game world." alt="" coords="23,255,209,280"/>
+<area shape="poly" id="edge17_Node000003_Node000013" title=" " alt="" coords="194,217,135,257,132,252,191,212"/>
+<area shape="rect" id="Node000005" href="$df/dd9/game_8cpp.html" title="Реализация основного класса игры." alt="" coords="174,475,325,500"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="305,438,264,476,260,472,302,434"/>
+<area shape="rect" id="Node000006" href="$df/d0a/main_8cpp.html" title=" " alt="" coords="349,475,454,500"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="349,434,391,472,387,476,346,438"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="583,294,575,326,568,342,557,355,531,371,492,384,401,404,400,399,490,379,528,366,553,351,563,339,570,324,577,293"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="550,289,476,330,473,325,548,284"/>
+<area shape="rect" id="Node000010" href="$db/d80/player_8cpp.html" title="Реализация класса Player, представляющего игрока в игре." alt="" coords="619,328,773,353"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="613,285,679,326,676,330,610,289"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="422,362,348,403,345,399,420,358"/>
+<area shape="rect" id="Node000009" href="$d6/d54/renderer_8cpp.html" title="Реализация класса Renderer для отрисовки игрового мира и интерфейса." alt="" coords="431,401,598,427"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="475,362,507,399,503,403,471,366"/>
+<area shape="poly" id="edge14_Node000011_Node000004" title=" " alt="" coords="328,294,328,401,323,401,323,294"/>
+<area shape="poly" id="edge15_Node000011_Node000008" title=" " alt="" coords="359,284,434,325,431,330,357,289"/>
+<area shape="rect" id="Node000012" href="$da/d7e/viewport_8cpp.html" title="Реализация класса Viewport для управления областью просмотра (камерой) в игре." alt="" coords="117,328,288,353"/>
+<area shape="poly" id="edge16_Node000011_Node000012" title=" " alt="" coords="296,289,224,330,222,325,293,284"/>
+<area shape="rect" id="Node000016" href="$d9/d43/npc__card_8cpp.html" title=" " alt="" coords="816,181,979,207"/>
+<area shape="poly" id="edge20_Node000015_Node000016" title=" " alt="" coords="879,138,895,180,890,182,874,140"/>
+<area shape="poly" id="edge22_Node000017_Node000007" title=" " alt="" coords="726,139,743,154,756,171,762,190,756,208,737,228,715,242,666,260,664,255,713,238,734,224,751,205,756,190,752,174,739,158,723,143"/>
+<area shape="rect" id="Node000018" href="$dd/d55/player__card_8cpp.html" title="Implements the PlayerCard class methods." alt="" coords="561,181,741,207"/>
+<area shape="poly" id="edge23_Node000017_Node000018" title=" " alt="" coords="672,147,658,182,653,180,667,145"/>
+</map>

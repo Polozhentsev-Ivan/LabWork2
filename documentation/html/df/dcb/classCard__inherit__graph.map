@@ -1,0 +1,29 @@
+<map id="Card" name="Card">
+<area shape="rect" id="Node000001" title="Represents a generic card in the game." alt="" coords="356,5,408,31"/>
+<area shape="rect" id="Node000002" href="$d9/df5/classCharacterCard.html" title="Represents a character card in the game." alt="" coords="117,79,231,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="344,35,209,81,207,76,342,30"/>
+<area shape="rect" id="Node000006" href="$de/d97/classEnvironmentCard.html" title="Represents an environment card in the game." alt="" coords="256,79,391,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="366,43,335,80,331,77,362,40"/>
+<area shape="rect" id="Node000007" href="$d0/dae/classItem.html" title="Represents a generic item card in the game." alt="" coords="415,79,467,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="402,40,433,77,429,80,398,43"/>
+<area shape="rect" id="Node000012" href="$d1/d4f/classQuest.html" title="Represents a quest card in the game." alt="" coords="523,79,583,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="422,33,526,76,524,81,420,38"/>
+<area shape="rect" id="Node000003" href="$dc/df9/classMonsterCard.html" title="Represents a monster card in the game." alt="" coords="5,152,111,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="145,113,78,154,76,149,142,109"/>
+<area shape="rect" id="Node000004" href="$d6/da1/classNPCCard.html" title="Represents a Non&#45;Player Character (NPC) card in the game." alt="" coords="135,152,213,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="177,118,177,152,171,152,171,118"/>
+<area shape="rect" id="Node000005" href="$d5/d49/classPlayerCard.html" title="Represents the player&#39;s character card in the game." alt="" coords="238,152,331,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="205,109,268,150,265,154,202,114"/>
+<area shape="rect" id="Node000008" href="$d1/d42/classEquipment.html" title="Represents a generic equipment item in the game." alt="" coords="375,152,467,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="436,118,426,153,421,151,431,117"/>
+<area shape="rect" id="Node000009" href="$d4/de8/classAccessory.html" title="Represents an accessory item in the game." alt="" coords="277,225,365,251"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="395,187,339,227,335,223,392,183"/>
+<area shape="rect" id="Node000010" href="$d5/df0/classArmor.html" title="Represents an armor item in the game." alt="" coords="389,225,452,251"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="423,191,423,225,418,225,418,191"/>
+<area shape="rect" id="Node000011" href="$dc/de5/classWeapon.html" title="Represents a weapon in the game." alt="" coords="477,225,551,251"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="448,183,500,223,497,227,445,188"/>
+<area shape="rect" id="Node000013" href="$d4/d7b/classGatheringQuest.html" title="Represents a gathering quest in the game." alt="" coords="491,152,615,177"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="555,118,555,152,550,152,550,118"/>
+<area shape="rect" id="Node000014" href="$d6/d12/classHuntingQuest.html" title="Represents a hunting quest in the game." alt="" coords="639,152,749,177"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="589,108,672,149,670,154,586,112"/>
+</map>

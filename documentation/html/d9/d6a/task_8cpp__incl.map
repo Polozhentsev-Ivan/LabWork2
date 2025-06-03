@@ -1,0 +1,11 @@
+<map id="src/card/task.cpp" name="src/card/task.cpp">
+<area shape="rect" id="Node000001" title="Implements the Task, CollectTask, and KillTask class methods." alt="" coords="83,5,215,31"/>
+<area shape="rect" id="Node000002" href="$db/da4/task_8h.html" title=" " alt="" coords="87,79,212,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,31,152,65,147,65,147,31"/>
+<area shape="rect" id="Node000003" href="$d0/d0b/enums_8h.html" title=" " alt="" coords="5,167,96,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,121,78,160,75,156,124,117"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="120,167,179,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="152,119,152,153,147,153,147,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="203,167,290,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="175,117,223,156,220,160,171,121"/>
+</map>
