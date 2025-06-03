@@ -1,0 +1,14 @@
+<map id="src/game/enviroment_manager.cpp" name="src/game/enviroment_manager.cpp">
+<area shape="rect" id="Node000001" title="Реализация классов для управления деревьями и ящиками монстров на карте." alt="" coords="157,5,319,45"/>
+<area shape="rect" id="Node000002" href="$d0/db8/enviroment__manager_8h.html" title=" " alt="" coords="23,93,200,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,48,152,88,149,83,208,43"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="195,181,262,207"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="240,46,233,168,227,168,234,46"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="275,101,361,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="258,44,299,88,296,92,254,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,181,68,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,135,59,173,55,169,91,132"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,181,151,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="117,133,121,167,116,168,111,134"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="141,131,202,172,199,176,138,136"/>
+</map>

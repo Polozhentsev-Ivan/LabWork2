@@ -1,0 +1,34 @@
+<map id="include/card/npc_card.h" name="include/card/npc_card.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="509,5,684,31"/>
+<area shape="rect" id="Node000002" href="$d4/dd6/character__card_8h.html" title=" " alt="" coords="28,152,159,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="557,33,147,151,146,146,556,28"/>
+<area shape="rect" id="Node000006" href="$d0/d0b/enums_8h.html" title=" " alt="" coords="420,225,511,251"/>
+<area shape="poly" id="edge20_Node000001_Node000006" title=" " alt="" coords="621,29,665,55,712,91,730,112,741,134,743,157,732,179,718,191,698,201,645,216,583,227,525,234,524,229,582,222,643,211,696,196,715,186,728,176,737,156,736,135,725,115,708,95,662,59,618,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="654,152,717,177"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="606,30,674,139,669,142,602,33"/>
+<area shape="rect" id="Node000008" href="$d2/dc9/quests__card_8h.html" title=" " alt="" coords="423,79,535,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="579,33,511,74,509,69,576,28"/>
+<area shape="rect" id="Node000003" href="$d5/da7/card_8h.html" title=" " alt="" coords="201,225,264,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,175,199,217,196,221,115,180"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="154,175,408,223,407,228,153,180"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="338,299,396,324"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="255,248,334,290,332,294,253,253"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="488,299,574,324"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="264,244,475,294,474,299,263,249"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="423,98,186,118,75,134,38,144,18,154,9,172,13,187,29,200,55,210,122,224,188,232,187,237,121,230,53,215,27,204,9,190,3,172,15,150,36,139,74,129,185,113,423,93"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="489,103,505,136,509,157,507,178,498,198,487,216,482,213,494,196,502,177,504,157,500,138,485,105"/>
+<area shape="poly" id="edge17_Node000008_Node000007" title=" " alt="" coords="513,101,642,146,641,151,511,107"/>
+<area shape="rect" id="Node000009" href="$d8/dac/item__card_8h.html" title=" " alt="" coords="183,152,282,177"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="440,107,286,151,285,146,439,101"/>
+<area shape="rect" id="Node000010" href="$db/da4/task_8h.html" title=" " alt="" coords="568,152,630,177"/>
+<area shape="poly" id="edge13_Node000008_Node000010" title=" " alt="" coords="500,102,569,142,566,147,497,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="306,152,383,177"/>
+<area shape="poly" id="edge18_Node000008_Node000011" title=" " alt="" coords="459,106,380,148,377,143,456,102"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="407,152,492,177"/>
+<area shape="poly" id="edge19_Node000008_Node000012" title=" " alt="" coords="477,105,462,140,457,138,472,103"/>
+<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="235,178,235,212,230,212,230,178"/>
+<area shape="poly" id="edge12_Node000009_Node000006" title=" " alt="" coords="271,175,416,219,414,224,269,180"/>
+<area shape="poly" id="edge15_Node000010_Node000004" title=" " alt="" coords="594,179,566,215,525,253,467,283,411,302,409,297,465,278,522,248,562,211,589,176"/>
+<area shape="poly" id="edge16_Node000010_Node000005" title=" " alt="" coords="598,179,570,252,549,288,544,286,565,250,593,177"/>
+<area shape="poly" id="edge14_Node000010_Node000006" title=" " alt="" coords="579,180,501,221,498,216,576,175"/>
+</map>

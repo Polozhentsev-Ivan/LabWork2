@@ -1,0 +1,5 @@
+<map id="CollectTask" name="CollectTask">
+<area shape="rect" id="Node000001" title="Represents a task that involves collecting specific items." alt="" coords="5,79,101,104"/>
+<area shape="rect" id="Node000002" href="$d6/d9c/classTask.html" title="Represents a generic task within a quest." alt="" coords="28,5,79,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,44,56,79,51,79,51,44"/>
+</map>

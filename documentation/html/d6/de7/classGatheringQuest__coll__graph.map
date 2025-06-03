@@ -1,0 +1,7 @@
+<map id="GatheringQuest" name="GatheringQuest">
+<area shape="rect" id="Node000001" title="Represents a gathering quest in the game." alt="" coords="5,152,129,177"/>
+<area shape="rect" id="Node000002" href="$d1/d4f/classQuest.html" title="Represents a quest card in the game." alt="" coords="37,79,97,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,118,70,152,65,152,65,118"/>
+<area shape="rect" id="Node000003" href="$d3/d66/classCard.html" title="Represents a generic card in the game." alt="" coords="41,5,93,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,44,70,79,65,79,65,44"/>
+</map>

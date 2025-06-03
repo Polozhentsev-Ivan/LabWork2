@@ -1,0 +1,26 @@
+<map id="Game" name="Game">
+<area shape="rect" id="Node000001" title="Main class for managing the game logic, state, and rendering." alt="" coords="281,331,342,356"/>
+<area shape="rect" id="Node000002" href="$d0/d23/classTerminalManager.html" title="Manages terminal settings and operations." alt="" coords="5,155,140,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,194,57,231,59,250,67,266,80,278,102,290,160,310,225,325,281,335,280,340,224,330,159,315,100,295,77,283,63,270,54,251,52,231,60,193"/>
+<area shape="rect" id="Node000011" href="$d1/d52/classRenderer.html" title="Handles rendering the game state to the terminal." alt="" coords="137,243,219,268"/>
+<area shape="poly" id="edge11_Node000011_Node000002" title=" " alt="" coords="99,187,165,240,162,244,96,191"/>
+<area shape="rect" id="Node000003" href="$d5/d5b/classInput.html" title="Handles user input from the terminal." alt="" coords="243,243,297,268"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="279,281,288,305,304,329,299,332,284,308,274,283"/>
+<area shape="rect" id="Node000004" href="$d6/d95/classGameMap.html" title="Manages the game map, including its layout, entities, and interactions." alt="" coords="321,243,411,268"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="354,281,321,332,317,329,349,278"/>
+<area shape="rect" id="Node000005" href="$d6/d82/classTreeManager.html" title="Manages tree spaces on the game map." alt="" coords="185,155,291,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,190,274,217,297,231,322,241,320,245,295,235,271,221,248,194"/>
+<area shape="rect" id="Node000006" href="$db/ddc/classMonsterBox.html" title="Manages monster spawn boxes on the game map." alt="" coords="316,155,416,180"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="369,194,369,242,363,242,363,194"/>
+<area shape="rect" id="Node000007" href="$d2/d4b/classPlayer.html" title="Represents the player character in the game." alt="" coords="435,243,497,268"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="437,277,381,309,335,333,333,328,378,304,434,273"/>
+<area shape="rect" id="Node000008" href="$d5/d49/classPlayerCard.html" title="Represents the player&#39;s character card in the game." alt="" coords="491,155,585,180"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="529,193,511,220,484,244,481,240,507,217,524,190"/>
+<area shape="rect" id="Node000009" href="$d9/df5/classCharacterCard.html" title="Represents a character card in the game." alt="" coords="481,80,595,105"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="541,120,541,154,535,154,535,120"/>
+<area shape="rect" id="Node000010" href="$d3/d66/classCard.html" title="Represents a generic card in the game." alt="" coords="512,5,564,31"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="541,45,541,80,535,80,535,45"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="193,278,216,305,248,322,281,333,280,338,246,327,212,309,189,282"/>
+<area shape="rect" id="Node000012" href="$da/d87/classViewport.html" title="Manages the visible portion of the game map." alt="" coords="522,243,602,268"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="529,277,454,309,395,327,343,339,342,333,394,321,452,304,527,272"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="CharacterCard" name="CharacterCard">
+<area shape="rect" id="Node000001" title="Represents a character card in the game." alt="" coords="117,79,231,104"/>
+<area shape="rect" id="Node000003" href="$dc/df9/classMonsterCard.html" title="Represents a monster card in the game." alt="" coords="5,152,111,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,113,78,154,76,149,142,109"/>
+<area shape="rect" id="Node000004" href="$d6/da1/classNPCCard.html" title="Represents a Non&#45;Player Character (NPC) card in the game." alt="" coords="135,152,213,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,118,177,152,171,152,171,118"/>
+<area shape="rect" id="Node000005" href="$d5/d49/classPlayerCard.html" title="Represents the player&#39;s character card in the game." alt="" coords="238,152,331,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="205,109,268,150,265,154,202,114"/>
+<area shape="rect" id="Node000002" href="$d3/d66/classCard.html" title="Represents a generic card in the game." alt="" coords="148,5,200,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,44,177,79,171,79,171,44"/>
+</map>

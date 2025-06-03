@@ -27,7 +27,7 @@ TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 DEPS = $(wildcard $(INC_DIR)/*.h)
 
-.PHONY: all test check clean cleanall
+.PHONY: all test check clean cleanall docs cleandocs
 
 all: $(PROJECT)
 
@@ -56,3 +56,9 @@ clean:
 
 cleanall: clean
 	rm -f $(PROJECT) $(LIBPROJECT) $(TESTPROJECT)
+
+docs:
+	doxygen Doxyfile
+	
+cleandocs:
+	rm -rf documentation

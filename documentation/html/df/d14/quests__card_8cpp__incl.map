@@ -1,0 +1,28 @@
+<map id="src/card/quests_card.cpp" name="src/card/quests_card.cpp">
+<area shape="rect" id="Node000001" title="Implements the Quest, HuntingQuest, and GatheringQuest class methods." alt="" coords="138,5,320,31"/>
+<area shape="rect" id="Node000002" href="$d2/dc9/quests__card_8h.html" title=" " alt="" coords="166,79,292,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,31,232,65,226,65,226,31"/>
+<area shape="rect" id="Node000003" href="$d5/da7/card_8h.html" title=" " alt="" coords="14,240,76,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="166,103,126,108,84,120,45,139,14,168,8,182,10,198,27,228,23,231,5,199,3,182,9,165,42,135,82,115,125,103,166,98"/>
+<area shape="rect" id="Node000006" href="$d0/d0b/enums_8h.html" title=" " alt="" coords="101,240,192,265"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="218,120,189,168,159,229,154,226,184,165,214,117"/>
+<area shape="rect" id="Node000007" href="$d8/dac/item__card_8h.html" title=" " alt="" coords="24,167,122,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="193,121,109,163,107,158,190,116"/>
+<area shape="rect" id="Node000008" href="$db/da4/task_8h.html" title=" " alt="" coords="198,167,260,192"/>
+<area shape="poly" id="edge9_Node000002_Node000008" title=" " alt="" coords="232,119,232,153,226,153,226,119"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="284,167,347,192"/>
+<area shape="poly" id="edge13_Node000002_Node000009" title=" " alt="" coords="252,117,294,155,291,159,248,121"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="372,167,449,192"/>
+<area shape="poly" id="edge14_Node000002_Node000010" title=" " alt="" coords="273,116,372,159,370,164,271,121"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="473,167,558,192"/>
+<area shape="poly" id="edge15_Node000002_Node000011" title=" " alt="" coords="293,115,461,160,460,166,291,120"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="216,313,274,339"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="77,263,203,307,201,312,76,268"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="70,313,156,339"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="58,264,94,301,90,305,54,268"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="71,193,57,228,52,226,66,191"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="87,190,126,228,123,232,83,194"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="236,191,250,240,252,271,251,300,245,299,247,271,245,240,231,193"/>
+<area shape="poly" id="edge12_Node000008_Node000005" title=" " alt="" coords="231,193,224,228,217,248,206,267,181,291,153,309,151,305,178,287,201,264,212,246,219,226,225,192"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="217,194,172,233,168,229,214,190"/>
+</map>

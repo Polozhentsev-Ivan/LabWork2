@@ -1,10 +1,20 @@
+/**
+ * @file game.cpp
+ * @brief Реализация основного класса игры.
+ */
 #include "../../include/game/game.h"
 #include <iostream>
 #include <unistd.h>
 #include <cstdlib>
 #include <chrono>
 #include <ctime>   // для time()
+#include <cmath>
 
+/**
+ * @brief Конструктор класса Game.
+ *
+ * Инициализирует члены класса значениями по умолчанию.
+ */
 Game::Game() 
     : renderer(terminal), 
       gameRunning(false),
@@ -19,10 +29,25 @@ Game::Game()
       lastSpeed(0),
       lastLevel(0),
       lastExperience(0),
-      lastExpToNextLevel(0) {}
+      lastExpToNextLevel(0),
+      finalWaveSpawned(false),
+      finalWaveTimeSeconds(180), // 3 минуты (180 секунд)
+      gameCompleted(false) {}
 
+/**
+ * @brief Деструктор класса Game.
+ */
 Game::~Game() {}
 
+/**
+ * @brief Инициализирует игру.
+ *
+ * Загружает карту, устанавливает размеры терминала и рендерера,
+ * инициализирует позицию игрока и область просмотра.
+ *
+ * @param mapFile Путь к файлу карты.
+ * @return True, если инициализация прошла успешно, false в противном случае.
+ */
 bool Game::init(const std::string& mapFile) {
     int termWidth, termHeight;
     if (!terminal.getTerminalSize(termWidth, termHeight)) {
@@ -57,6 +82,11 @@ bool Game::init(const std::string& mapFile) {
     return true;
 }
 
+/**
+ * @brief Запускает основной игровой цикл.
+ *
+ * Обрабатывает ввод пользователя, обновляет состояние игры и отрисовывает игровой мир.
+ */
 void Game::run() {
     terminal.setRawMode(true);
     
@@ -70,7 +100,18 @@ void Game::run() {
         ).count();
     };
     
+    gameStartTime = std::chrono::steady_clock::now(); // Запускаем таймер игры
+    
     while (gameRunning) {
+        // Проверяем, завершена ли игра
+        checkGameCompletion();
+        
+        // Если игра завершена, показываем сообщение о завершении
+        if (gameCompleted) {
+            showGameCompletionMessage();
+            break;
+        }
+        
         if (!processInput()) {
             break;
         }
@@ -84,6 +125,20 @@ void Game::run() {
             map.updateBoxes();
             updateBoxIndicators();
             lastBoxUpdate = currentTime;
+        }
+        
+        // Проверяем, не пора ли запустить финальную волну
+        if (!finalWaveSpawned) {
+            auto currentTimePoint = std::chrono::steady_clock::now();
+            auto elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(currentTimePoint - gameStartTime).count();
+            
+            if (elapsedSeconds >= finalWaveTimeSeconds) {
+                spawnFinalWave();
+                finalWaveSpawned = true;
+            }
+        } else {
+            // Обновляем движение монстров финальной волны
+            updateFinalWaveMonsters();
         }
         
         if (currentTime - lastMonsterUpdate > 500) {
@@ -107,6 +162,9 @@ void Game::run() {
             playerStatsChanged = false;
         }
         
+        // Показываем таймер финальной волны
+        showFinalWaveTimer();
+        
         if (targetedMonster) {
             showMonsterInfo();
         }
@@ -117,6 +175,13 @@ void Game::run() {
     terminal.cleanup(renderer.getHeight());
 }
 
+/**
+ * @brief Обрабатывает ввод пользователя.
+ *
+ * Считывает символы из входного потока и выполняет соответствующие действия в игре.
+ *
+ * @return True, если игра должна продолжаться, false, если игра должна завершиться (например, по нажатию 'q').
+ */
 bool Game::processInput() {
     char inputBuffer[32];
     
@@ -196,13 +261,19 @@ bool Game::processInput() {
         int targetRow, targetCol;
         if (map.findMonsterInRange(playerY, playerX, player.getAttackRange(), targetRow, targetCol)) {
             int damage = player.getCard().getAttack();
-            bool killed = map.attackMonster(targetRow, targetCol, damage);
+            int expGained = 0;
+            bool killed = map.attackMonster(targetRow, targetCol, damage, expGained);
             
             if (!killed) {
                 targetedMonsterRow = targetRow;
                 targetedMonsterCol = targetCol;
                 targetedMonster = true;
             } else {
+                // Монстр убит, добавляем опыт игроку
+                if (expGained > 0) {
+                    player.getCard().addExperience(expGained);
+                    playerStatsChanged = true;
+                }
                 targetedMonster = false;
                 clearMonsterInfo();
             }
@@ -212,14 +283,29 @@ bool Game::processInput() {
     return true;
 }
 
+/**
+ * @brief Возвращает задержку перед следующим ходом игрока.
+ *
+ * @return Задержка в микросекундах.
+ */
 int Game::getMoveDelay() const {
     return player.getMoveDelay();
 }
 
+/**
+ * @brief Возвращает высоту терминала.
+ *
+ * @return Высота терминала в строках.
+ */
 int Game::getTermHeight() const {
     return renderer.getHeight();
 }
 
+/**
+ * @brief Обновляет индикаторы состояния ящиков монстров в видимой области.
+ *
+ * Обновляет символы на карте, отображающие готовность ящиков или таймер восстановления.
+ */
 void Game::updateBoxIndicators() {
     int viewX, viewY, viewWidth, viewHeight;
     viewport.getViewArea(viewX, viewY, viewWidth, viewHeight);
@@ -239,6 +325,11 @@ void Game::updateBoxIndicators() {
     }
 }
 
+/**
+ * @brief Инициализирует индикаторы состояния всех ящиков монстров на карте.
+ *
+ * Вызывается один раз при инициализации для первоначального отображения состояния ящиков.
+ */
 void Game::initAllBoxIndicators() {
     for (int row = 0; row < map.getHeight(); row++) {
         for (int col = 0; col < map.getWidth(); col++) {
@@ -255,6 +346,11 @@ void Game::initAllBoxIndicators() {
     }
 }
 
+/**
+ * @brief Активирует ящик монстров, если игрок находится рядом с готовым ящиком.
+ *
+ * При активации ящик используется, и из него появляется монстр.
+ */
 void Game::activateMonsterBox() {
     int playerX, playerY;
     player.getPosition(playerX, playerY);
@@ -302,13 +398,18 @@ void Game::activateMonsterBox() {
     }
 }
 
+/**
+ * @brief Отображает статистику игрока в нижней части экрана.
+ *
+ * Показывает текущее здоровье, атаку, защиту, скорость, уровень и опыт игрока.
+ */
 void Game::showPlayerStats() {
     const PlayerCard& card = player.getCard();
     
     int width, height;
     terminal.getTerminalSize(width, height);
     
-    int statsRow = height - 3;
+    int statsRow = height - 4; // Сдвигаем статистику на строку выше, чтобы освободить место для таймера
     
     int health = card.getHealth();
     int maxHealth = card.getMaxHealth();
@@ -333,6 +434,54 @@ void Game::showPlayerStats() {
     std::cout << statsInfo;
 }
 
+/**
+ * @brief Отображает таймер до появления финальной волны монстров или сообщение о ее появлении.
+ *
+ * Таймер отображается в нижней части экрана.
+ */
+void Game::showFinalWaveTimer() {
+    int width, height;
+    terminal.getTerminalSize(width, height);
+    
+    int timerRow = height - 3;
+    
+    // Очищаем строку
+    terminal.moveCursor(timerRow, 1);
+    std::cout << std::string(width, ' ');
+    
+    // Если финальная волна уже появилась, показываем сообщение
+    if (finalWaveSpawned) {
+        terminal.moveCursor(timerRow, 1);
+        std::cout << "ВНИМАНИЕ! Финальная волна монстров атакует!";
+        return;
+    }
+    
+    // Вычисляем оставшееся время
+    auto currentTime = std::chrono::steady_clock::now();
+    auto elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(currentTime - gameStartTime).count();
+    int remainingSeconds = finalWaveTimeSeconds - elapsedSeconds;
+    
+    if (remainingSeconds < 0) remainingSeconds = 0;
+    
+    int minutes = remainingSeconds / 60;
+    int seconds = remainingSeconds % 60;
+    
+    std::string timerInfo = "До финальной волны монстров: ";
+    timerInfo += (minutes < 10 ? "0" : "");
+    timerInfo += std::to_string(minutes);
+    timerInfo += ":";
+    timerInfo += (seconds < 10 ? "0" : "");
+    timerInfo += std::to_string(seconds);
+    
+    terminal.moveCursor(timerRow, 1);
+    std::cout << timerInfo;
+}
+
+/**
+ * @brief Отображает информацию о целевом монстре.
+ *
+ * Показывает имя, здоровье, атаку, защиту и уровень монстра.
+ */
 void Game::showMonsterInfo() {
     if (!targetedMonster || !map.isMonsterAt(targetedMonsterRow, targetedMonsterCol)) {
         targetedMonster = false;
@@ -366,6 +515,9 @@ void Game::showMonsterInfo() {
     std::cout << monsterInfo;
 }
 
+/**
+ * @brief Очищает информацию о монстре с экрана.
+ */
 void Game::clearMonsterInfo() {
     int width, height;
     terminal.getTerminalSize(width, height);
@@ -376,6 +528,92 @@ void Game::clearMonsterInfo() {
     std::cout << std::string(width, ' ');
 }
 
+/**
+ * @brief Запускает финальную волну монстров.
+ *
+ * Создает определенное количество сильных монстров вокруг игрока.
+ */
+void Game::spawnFinalWave() {
+    // Получаем позицию игрока
+    int playerX, playerY;
+    player.getPosition(playerX, playerY);
+    
+    // Количество монстров в финальной волне
+    const int numMonsters = 15;
+    
+    // Минимальное расстояние от игрока для появления монстров
+    const int minDistance = 5;
+    // Максимальное расстояние от игрока для появления монстров
+    const int maxDistance = 15;
+    
+    // Создаем монстров вокруг игрока на определенном расстоянии
+    for (int i = 0; i < numMonsters; i++) {
+        // Пытаемся найти подходящую позицию для монстра
+        for (int attempts = 0; attempts < 50; attempts++) {
+            // Генерируем случайное расстояние от игрока
+            int distance = minDistance + rand() % (maxDistance - minDistance + 1);
+            
+            // Генерируем случайный угол
+            double angle = (rand() % 360) * 3.14159 / 180.0;
+            
+            // Вычисляем координаты монстра
+            int monsterY = playerY + static_cast<int>(distance * sin(angle));
+            int monsterX = playerX + static_cast<int>(distance * cos(angle));
+            
+            // Проверяем, что позиция валидна и на ней нет препятствий
+            if (map.isValidPosition(monsterY, monsterX) && 
+                map.getCell(monsterY, monsterX) == ' ' && 
+                !map.isMonsterAt(monsterY, monsterX) && 
+                !map.isBoxLocation(monsterY, monsterX)) {
+                
+                // Создаем монстра с более высоким уровнем для финальной волны
+                map.spawnMonster(monsterY, monsterX, 3); // Уровень 3 - самый сильный
+                break;
+            }
+        }
+    }
+    
+    // Запоминаем время начала финальной волны
+    finalWaveStartTime = std::chrono::steady_clock::now();
+}
+
+/**
+ * @brief Обновляет позиции монстров финальной волны.
+ *
+ * Монстры финальной волны постоянно движутся в сторону игрока.
+ */
+void Game::updateFinalWaveMonsters() {
+    static auto lastMoveTime = std::chrono::steady_clock::now();
+    auto currentTime = std::chrono::steady_clock::now();
+    
+    // Обновляем позиции монстров каждые 500 мс
+    if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastMoveTime).count() < 500) {
+        return;
+    }
+    
+    lastMoveTime = currentTime;
+    
+    // Получаем позицию игрока
+    int playerX, playerY;
+    player.getPosition(playerX, playerY);
+    
+    // Проходим по всей карте и ищем монстров
+    for (int row = 0; row < map.getHeight(); row++) {
+        for (int col = 0; col < map.getWidth(); col++) {
+            if (map.isMonsterAt(row, col)) {
+                // Перемещаем монстра в направлении игрока
+                map.moveMonsterTowardsPlayer(row, col, playerY, playerX);
+            }
+        }
+    }
+}
+
+/**
+ * @brief Проверяет, изменились ли характеристики игрока, и устанавливает флаг playerStatsChanged.
+ *
+ * Если какие-либо характеристики игрока изменились с момента последней проверки,
+ * устанавливает playerStatsChanged в true для последующего обновления отображения.
+ */
 void Game::checkPlayerStats() {
     const PlayerCard& card = player.getCard();
     
@@ -398,5 +636,88 @@ void Game::checkPlayerStats() {
         lastExpToNextLevel = card.getExperienceToNextLevel();
         
         playerStatsChanged = true;
+    }
+}
+
+/**
+ * @brief Проверяет, завершена ли игра.
+ *
+ * Игра считается завершенной, если финальная волна была запущена и на карте не осталось монстров.
+ */
+void Game::checkGameCompletion() {
+    // Если игра уже завершена, ничего не делаем
+    if (gameCompleted) {
+        return;
+    }
+    
+    // Если финальная волна еще не появилась, ничего не делаем
+    if (!finalWaveSpawned) {
+        return;
+    }
+    
+    // Проверяем, остались ли монстры на карте
+    bool monstersRemain = false;
+    for (int row = 0; row < map.getHeight(); row++) {
+        for (int col = 0; col < map.getWidth(); col++) {
+            if (map.isMonsterAt(row, col)) {
+                monstersRemain = true;
+                break;
+            }
+        }
+        if (monstersRemain) {
+            break;
+        }
+    }
+    
+    // Если монстров не осталось, игра завершена
+    if (!monstersRemain) {
+        gameCompleted = true;
+    }
+}
+
+/**
+ * @brief Отображает сообщение о завершении игры.
+ *
+ * Сообщение выводится по центру экрана и предлагает нажать 'q' для выхода.
+ */
+void Game::showGameCompletionMessage() {
+    if (!gameCompleted) {
+        return;
+    }
+    
+    int width, height;
+    terminal.getTerminalSize(width, height);
+    
+    // Очищаем экран
+    terminal.clearScreen();
+    
+    // Выводим сообщение о завершении игры
+    terminal.moveCursor(height / 2 - 1, width / 2 - 15);
+    std::cout << "=============================";
+    
+    terminal.moveCursor(height / 2, width / 2 - 15);
+    std::cout << "Поздравляем! Вы прошли игру!";
+    
+    terminal.moveCursor(height / 2 + 1, width / 2 - 15);
+    std::cout << "=============================";
+    
+    terminal.moveCursor(height / 2 + 3, width / 2 - 15);
+    std::cout << "Нажмите 'q' для выхода";
+    
+    // Ожидаем нажатия клавиши 'q' для выхода
+    while (true) {
+        char inputBuffer[32];
+        int bytesRead = input.readInput(inputBuffer, sizeof(inputBuffer));
+        
+        if (bytesRead > 0) {
+            for (int i = 0; i < bytesRead; i++) {
+                if (inputBuffer[i] == 'q') {
+                    gameRunning = false;
+                    return;
+                }
+            }
+        }
+        
+        usleep(100000); // Небольшая задержка
     }
 }

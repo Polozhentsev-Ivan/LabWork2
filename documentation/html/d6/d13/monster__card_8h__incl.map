@@ -1,0 +1,14 @@
+<map id="include/card/monster_card.h" name="include/card/monster_card.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="54,5,213,45"/>
+<area shape="rect" id="Node000002" href="$d4/dd6/character__card_8h.html" title=" " alt="" coords="17,93,148,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,47,100,83,95,80,119,44"/>
+<area shape="rect" id="Node000006" href="$d0/d0b/enums_8h.html" title=" " alt="" coords="139,167,229,192"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="144,45,163,92,180,152,175,154,157,94,139,47"/>
+<area shape="rect" id="Node000003" href="$d5/da7/card_8h.html" title=" " alt="" coords="51,167,114,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,119,85,153,80,153,80,119"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="100,116,158,156,155,161,97,121"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,240,64,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="77,194,52,230,48,227,73,191"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="89,240,175,265"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="93,191,118,227,114,230,89,194"/>
+</map>

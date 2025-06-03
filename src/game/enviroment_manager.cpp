@@ -1,15 +1,44 @@
+/**
+ * @file enviroment_manager.cpp
+ * @brief Реализация классов для управления деревьями и ящиками монстров на карте.
+ */
+
 #include "../../include/game/enviroment_manager.h"
 #include <algorithm>
+#include <chrono>
 
+/**
+ * @brief Менеджер для управления пространствами деревьев на карте.
+ */
 TreeManager::TreeManager() : mapData(nullptr), cacheInitialized(false) {}
 
+/**
+ * @brief Деструктор для TreeManager.
+ */
 TreeManager::~TreeManager() {}
 
+/**
+ * @brief Устанавливает данные карты для менеджера деревьев.
+ *
+ * Сбрасывает кэш инициализации.
+ *
+ * @param map Указатель на вектор строк, представляющий карту.
+ */
 void TreeManager::setMapData(const std::vector<std::string>* map) {
     mapData = map;
     cacheInitialized = false;
 }
 
+/**
+ * @brief Проверяет, является ли данная позиция пространством дерева.
+ *
+ * Пространство дерева определяется как пустая клетка (' '), окруженная
+ * символами '/' слева и '\' справа в пределах определенного диапазона.
+ *
+ * @param row Строка для проверки.
+ * @param col Столбец для проверки.
+ * @return True, если позиция является пространством дерева, false в противном случае.
+ */
 bool TreeManager::checkTreeSpace(int row, int col) const {
     if (!mapData || mapData->empty()) {
         return false;
@@ -45,6 +74,15 @@ bool TreeManager::checkTreeSpace(int row, int col) const {
     return false;
 }
 
+/**
+ * @brief Проверяет, является ли данная позиция пространством дерева, используя кэш, если он инициализирован.
+ *
+ * Если кэш инициализирован, возвращает значение из кэша. В противном случае выполняет проверку.
+ *
+ * @param row Строка для проверки.
+ * @param col Столбец для проверки.
+ * @return True, если позиция является пространством дерева, false в противном случае.
+ */
 bool TreeManager::isTreeSpace(int row, int col) const {
     if (cacheInitialized && 
         row >= 0 && row < static_cast<int>(treeSpaceCache.size()) &&
@@ -55,6 +93,11 @@ bool TreeManager::isTreeSpace(int row, int col) const {
     return checkTreeSpace(row, col);
 }
 
+/**
+ * @brief Инициализирует кэш пространств деревьев.
+ *
+ * Сканирует всю карту и заполняет кэш информацией о пространствах деревьев.
+ */
 void TreeManager::initCache() {
     if (!mapData || mapData->empty()) {
         return;
@@ -78,6 +121,14 @@ void TreeManager::initCache() {
     cacheInitialized = true;
 }
 
+/**
+ * @brief Обновляет кэш пространств деревьев вокруг указанной позиции.
+ *
+ * Пересчитывает состояние кэша для указанной позиции и ее окрестностей.
+ *
+ * @param row Строка для обновления.
+ * @param col Столбец для обновления.
+ */
 void TreeManager::updateCache(int row, int col) {
     if (!cacheInitialized || !mapData || mapData->empty() ||
         row < 0 || row >= static_cast<int>(treeSpaceCache.size()) ||
@@ -105,24 +156,58 @@ void TreeManager::updateCache(int row, int col) {
     cacheInitialized = oldCacheState;
 }
 
+/**
+ * @brief Проверяет, инициализирован ли кэш пространств деревьев.
+ *
+ * @return True, если кэш инициализирован, false в противном случае.
+ */
 bool TreeManager::isCacheInitialized() const {
     return cacheInitialized;
 }
 
+/**
+ * @brief Менеджер для управления ящиками монстров на карте.
+ */
 MonsterBox::MonsterBox() : mapData(nullptr) {}
 
+/**
+ * @brief Деструктор для MonsterBox.
+ */
 MonsterBox::~MonsterBox() {}
 
+/**
+ * @brief Устанавливает данные карты для менеджера ящиков монстров.
+ *
+ * Очищает список обнаруженных ящиков монстров.
+ *
+ * @param map Указатель на вектор строк, представляющий карту.
+ */
 void MonsterBox::setMapData(const std::vector<std::string>* map) {
     mapData = map;
     monsterBoxes.clear();
 }
 
+/**
+ * @brief Проверяет, является ли символ частью границы ящика монстра.
+ *
+ * @param c Символ для проверки.
+ * @return True, если символ является частью границы ящика, false в противном случае.
+ */
 bool MonsterBox::isBoxCharacter(char c) const {
     return c == '+' || c == '-' || c == '|' || c == '.' || c == '=' || 
            c == '*' || c == '\'' || c == '_' || c == '[' || c == ']';
 }
 
+/**
+ * @brief Пытается обнаружить ящик монстра, начиная с указанной позиции.
+ *
+ * Проверяет, начинается ли ящик монстра в данной позиции и определяет его размеры.
+ *
+ * @param row Строка начальной позиции.
+ * @param col Столбец начальной позиции.
+ * @param box Ссылка на структуру Box для сохранения информации об обнаруженном ящике.
+ * @return True, если ящик монстра обнаружен, false в противном случае.
+ */
 bool MonsterBox::detectBox(int row, int col, Box& box) const {
     if (!mapData || mapData->empty() || row < 0 || row >= static_cast<int>(mapData->size()) ||
         col < 0 || col >= static_cast<int>((*mapData)[row].size())) {
@@ -168,6 +253,11 @@ bool MonsterBox::detectBox(int row, int col, Box& box) const {
     return true;
 }
 
+/**
+ * @brief Сканирует всю карту для обнаружения всех ящиков монстров.
+ *
+ * Заполняет внутренний список обнаруженных ящиков.
+ */
 void MonsterBox::scanForBoxes() {
     if (!mapData || mapData->empty()) {
         return;
@@ -186,6 +276,13 @@ void MonsterBox::scanForBoxes() {
     }
 }
 
+/**
+ * @brief Проверяет, находится ли данная позиция внутри какого-либо ящика монстра.
+ *
+ * @param row Строка для проверки.
+ * @param col Столбец для проверки.
+ * @return True, если позиция находится внутри ящика монстра, false в противном случае.
+ */
 bool MonsterBox::isBoxLocation(int row, int col) const {
     for (const auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&
@@ -196,6 +293,13 @@ bool MonsterBox::isBoxLocation(int row, int col) const {
     return false;
 }
 
+/**
+ * @brief Проверяет, находится ли данная позиция строго внутри какого-либо ящика монстра (не на границе).
+ *
+ * @param row Строка для проверки.
+ * @param col Столбец для проверки.
+ * @return True, если позиция находится строго внутри ящика монстра, false в противном случае.
+ */
 bool MonsterBox::isInsideBox(int row, int col) const {
     for (const auto& box : monsterBoxes) {
         if (row > box.topRow && row < box.topRow + box.height - 1 &&
@@ -206,6 +310,13 @@ bool MonsterBox::isInsideBox(int row, int col) const {
     return false;
 }
 
+/**
+ * @brief Проверяет, готов ли ящик монстра в указанной позиции к использованию.
+ *
+ * @param row Строка для проверки.
+ * @param col Столбец для проверки.
+ * @return True, если ящик готов, false в противном случае.
+ */
 bool MonsterBox::isBoxReadyAt(int row, int col) const {
     for (const auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&
@@ -216,6 +327,14 @@ bool MonsterBox::isBoxReadyAt(int row, int col) const {
     return false;
 }
 
+/**
+ * @brief Использует ящик монстра в указанной позиции.
+ *
+ * Устанавливает флаг готовности ящика в false и обновляет время последнего использования.
+ *
+ * @param row Строка ящика.
+ * @param col Столбец ящика.
+ */
 void MonsterBox::useBox(int row, int col) {
     for (auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&
@@ -227,6 +346,11 @@ void MonsterBox::useBox(int row, int col) {
     }
 }
 
+/**
+ * @brief Обновляет состояние всех ящиков монстров.
+ *
+ * Проверяет время восстановления для ящиков, которые не готовы, и устанавливает их в состояние готовности, если время истекло.
+ */
 void MonsterBox::updateBoxes() {
     auto currentTime = std::chrono::steady_clock::now();
     
@@ -242,6 +366,13 @@ void MonsterBox::updateBoxes() {
     }
 }
 
+/**
+ * @brief Возвращает центральные координаты ящика монстра, содержащего указанную позицию.
+ *
+ * @param row Строка внутри ящика.
+ * @param col Столбец внутри ящика.
+ * @return Пара (строка, столбец) центра ящика или (-1, -1), если позиция не в ящике.
+ */
 std::pair<int, int> MonsterBox::getBoxCenter(int row, int col) const {
     for (const auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&
@@ -257,6 +388,13 @@ std::pair<int, int> MonsterBox::getBoxCenter(int row, int col) const {
     return {-1, -1};
 }
 
+/**
+ * @brief Возвращает оставшееся время восстановления для ящика монстра в указанной позиции.
+ *
+ * @param row Строка внутри ящика.
+ * @param col Столбец внутри ящика.
+ * @return Оставшееся время восстановления в секундах или 0, если ящик готов или позиция не в ящике.
+ */
 int MonsterBox::getRemainingCooldown(int row, int col) const {
     for (const auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&
@@ -278,6 +416,13 @@ int MonsterBox::getRemainingCooldown(int row, int col) const {
     return 0;
 }
 
+/**
+ * @brief Возвращает указатель на структуру Box для ящика монстра в указанной позиции.
+ *
+ * @param row Строка внутри ящика.
+ * @param col Столбец внутри ящика.
+ * @return Указатель на Box или nullptr, если позиция не в ящике.
+ */
 MonsterBox::Box* MonsterBox::getBoxAt(int row, int col) const {
     for (auto& box : monsterBoxes) {
         if (row >= box.topRow && row < box.topRow + box.height &&

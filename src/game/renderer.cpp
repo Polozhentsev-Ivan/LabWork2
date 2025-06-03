@@ -1,12 +1,29 @@
+/**
+ * @file renderer.cpp
+ * @brief Реализация класса Renderer для отрисовки игрового мира и интерфейса.
+ */
 #include "../../include/game/renderer.h"
 #include <iostream>
 
+/**
+ * @brief Конструктор класса Renderer.
+ *
+ * @param termManager Менеджер терминала для взаимодействия с консолью.
+ */
 Renderer::Renderer(TerminalManager& termManager)
     : terminal(termManager), termWidth(0), termHeight(0),
       targetedMonsterRow(-1), targetedMonsterCol(-1), monsterTargeted(false) {}
 
+/**
+ * @brief Деструктор класса Renderer.
+ */
 Renderer::~Renderer() {}
 
+/**
+ * @brief Предварительно выделяет память для буферов отрисовки.
+ *
+ * Это помогает избежать многократных выделений памяти во время отрисовки.
+ */
 void Renderer::preallocateBuffers() {
     tempLine.reserve(termWidth + 10);
     tempSegment.reserve(termWidth + 10);
@@ -18,6 +35,12 @@ void Renderer::preallocateBuffers() {
     }
 }
 
+/**
+ * @brief Устанавливает размеры области отрисовки (терминала).
+ *
+ * @param width Ширина области отрисовки.
+ * @param height Высота области отрисовки.
+ */
 void Renderer::setSize(int width, int height) {
     termWidth = width;
     termHeight = height;
@@ -25,14 +48,31 @@ void Renderer::setSize(int width, int height) {
     preallocateBuffers();
 }
 
+/**
+ * @brief Получает высоту области отрисовки.
+ *
+ * @return Высота области отрисовки.
+ */
 int Renderer::getHeight() const {
     return termHeight;
 }
 
+/**
+ * @brief Получает ширину области отрисовки.
+ *
+ * @return Ширина области отрисовки.
+ */
 int Renderer::getWidth() const {
     return termWidth;
 }
 
+/**
+ * @brief Отрисовывает игровое поле (карту, игрока, монстров) в указанной области просмотра.
+ *
+ * @param map Игровая карта.
+ * @param player Объект игрока.
+ * @param viewport Область просмотра (камера).
+ */
 void Renderer::drawField(const GameMap& map, const Player& player, const Viewport& viewport) {
     int playerX, playerY;
     player.getPosition(playerX, playerY);
@@ -98,6 +138,11 @@ void Renderer::drawField(const GameMap& map, const Player& player, const Viewpor
     std::cout.flush();
 }
 
+/**
+ * @brief Отображает статистику игрока под игровым полем.
+ *
+ * @param player Объект игрока.
+ */
 void Renderer::showPlayerStats(const Player& player) {
     const PlayerCard& card = player.getCard();
     
@@ -126,6 +171,11 @@ void Renderer::showPlayerStats(const Player& player) {
     std::cout << statsInfo;
 }
 
+/**
+ * @brief Отображает информацию о выбранном монстре.
+ *
+ * @param map Игровая карта для получения информации о монстре.
+ */
 void Renderer::showTargetedMonsterInfo(const GameMap& map) {
     if (!monsterTargeted || !map.isMonsterAt(targetedMonsterRow, targetedMonsterCol)) {
         clearTargetedMonster();
@@ -156,6 +206,9 @@ void Renderer::showTargetedMonsterInfo(const GameMap& map) {
     std::cout << monsterInfo;
 }
 
+/**
+ * @brief Очищает информацию о выбранном монстре с экрана.
+ */
 void Renderer::clearTargetedMonster() {
     monsterTargeted = false;
     
@@ -164,8 +217,14 @@ void Renderer::clearTargetedMonster() {
     std::cout << std::string(termWidth, ' ');
 }
 
+/**
+ * @brief Устанавливает монстра как цель для отображения информации.
+ *
+ * @param row Ряд, в котором находится монстр.
+ * @param col Колонка, в которой находится монстр.
+ */
 void Renderer::setTargetedMonster(int row, int col) {
     targetedMonsterRow = row;
     targetedMonsterCol = col;
     monsterTargeted = true;
-} 
+}
